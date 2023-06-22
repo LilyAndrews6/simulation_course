@@ -1,0 +1,135 @@
+---
+title: "Practical"
+author: "group_2"
+date: "2023-06-22"
+output: github_document
+---
+
+```{r message=FALSE, warning=FALSE}
+library(foreach)
+library(dplyr)
+library(tidyr)
+library(ggplot2)
+set.seed(1234)
+sim <- function(n1,n2,mu1,mu2,sd1,sd2,dgm){
+
+df1 <- data.frame(id = 1:n1, group = 1, value = rnorm(n1,mu1,sd1))
+df2 <- data.frame(id = 1:n2, group = 2, value = rnorm(n2,mu2,sd2))
+
+ttest <- t.test(y = df1$value, x = df2$value, paired = FALSE, var.equal = FALSE)
+diff_means <- ttest$statistic
+CI_lower <- ttest$conf.int[1]
+CI_upper <- ttest$conf.int[2]
+SE <- ttest$stderr
+
+ttest1 <- t.test(y = df1$value, x = df2$value, var.equal  = TRUE, paired = FALSE)
+diff_means1 <- ttest1$statistic
+CI_lower1 <- ttest1$conf.int[1]
+CI_upper1 <- ttest1$conf.int[2]
+SE1 <- ttest1$stderr
+
+output <- data.frame(diff_means,CI_lower,CI_upper,SE,diff_means1,CI_lower1,CI_upper1,SE1,dgm)
+colnames(output) <- c("t_unequal","lower_unequal","upper_unequal","SE_unequal","t_equal","lower_equal", "upper_equal","SE_equal","DGM")
+output
+}
+```
+Creating the 9 scenarios:
+```{r}
+nsim <- 1000
+dgm <- 1:9
+n1 <- c(rep(100,9))
+n2 <- c(100,200,1000,100,200,1000,100,200,1000)
+mu1 <- c(rep(5,9))
+mu2 <- c(rep(5,9))
+sd1 <- c(rep(10,9))
+sd2 <- c(20,30,5,20,30,5,20,30,5)
+df <- data.frame(n1,n2,mu1,mu2,sd1,sd2)
+df
+```
+Simulation:
+```{r}
+simulation <- foreach(j = dgm) %do% {
+  foreach(i=1:nsim, .combine = "rbind") %do% {
+  sim(n1[j],n2[j],mu1[j],mu2[j],sd1[j],sd2[j],j)
+}
+}
+test <- data.frame(do.call(rbind.data.frame, simulation))
+```
+Check mean:
+```{r message=FALSE, warning=FALSE}
+library(cowplot)
+check_mean <- function(dgm){
+  plot1 <- ggplot(subset(test, DGM == dgm), aes(x =t_unequal)) +
+    geom_histogram(binwidth = 0.05)
+  plot2 <- ggplot(subset(test, DGM == dgm), aes(x =t_equal)) +
+    geom_histogram(binwidth = 0.05)
+  hist_mean <- plot_grid(plot1, plot2)
+  hist_mean
+}
+check_mean(1)
+check_mean(2)
+check_mean(3)
+check_mean(4)
+check_mean(5)
+check_mean(6)
+check_mean(7)
+check_mean(8)
+check_mean(9)
+
+```
+Check mean/se:
+```{r}
+check_mean_se <- function(dgm){
+  plot1 <- ggplot(subset(test, DGM == dgm), aes(x =t_unequal, y=SE_unequal)) +
+    geom_point()
+  plot2 <- ggplot(subset(test, DGM == dgm), aes(x =t_equal, y=SE_equal)) +
+    geom_point()
+  hist_mean_se <- plot_grid(plot1, plot2)
+  hist_mean_se
+}
+check_mean_se(1)
+check_mean_se(2)
+check_mean_se(3)
+check_mean_se(4)
+check_mean_se(5)
+check_mean_se(6)
+check_mean_se(7)
+check_mean_se(8)
+check_mean_se(9)
+```
+Check bias of t_equal:
+```{r}
+test %>%
+  group_by(DGM) %>%
+  summarise(
+    bias = mean(t_equal) - (0),
+    empSE = sqrt(var(t_equal)),
+    modSE = mean(SE_equal)
+  )
+```
+Check bias of t_unequal:
+```{r}
+test %>%
+  group_by(DGM) %>%
+  summarise(
+    bias = mean(t_unequal) - (0),
+    empSE = sqrt(var(t_unequal)),
+    modSE = mean(SE_unequal)
+  )
+```
+
+```{r message=FALSE, warning=FALSE}
+library(rsimsum)
+s <- simsum(data = test, estvarname = "t_equal",
+    se = "SE_equal", true = 0, by = "DGM") 
+results_equal <- summary(s)
+results_equal
+```
+
+```{r}
+s <- simsum(data = test, estvarname = "t_unequal",
+    se = "SE_unequal", true = 0, by = "DGM") 
+results_unequal <- summary(s)
+results_unequal
+```
+
