@@ -1,16 +1,61 @@
 ---
-title: "Practical"
-author: "group_2"
+title: "Which t-test should I use? A simulation study comparing the Student and Welsh t-test"
+author: "Group 2 - Lily, Daniel, Anna and Em, "
 date: "2023-06-22"
 output: github_document
 ---
+
+## Study Design 
+
+### Aim
+To compare the performance of two different specifications of the two-sample t test when variances are unequal and group sizes are both equal and unequal 
+
+### Data Generation Mechanisms 
+
+We decided on 9 different DGMS, varying both the sample sizes and the degree to which the variance differed. They were as follows: 
+
+```{r}
+nsim <- 1000
+dgm <- 1:9
+n1 <- c(rep(100,9))
+n2 <- c(100,200,1000,100,200,1000,100,200,1000)
+mu1 <- c(rep(5,9))
+mu2 <- c(rep(5,9))
+sd1 <- c(rep(10,9))
+sd2 <- c(20,30,5,20,30,5,20,30,5)
+df <- data.frame(n1,n2,mu1,mu2,sd1,sd2)
+df
+```
+
+### Estimand(s) 
+
+The estimand was the difference in means. 
+
+### Methods 
+We compared two different t-tests, one of which was just a standard Student's t-test (which assumes equal variances), and one which allows for different variances in the two groups (Welch's t-test). We therefore had two methods: 
+
+1) standard t-test (t_equal)
+2) Welch t-test (t_unequal)
+
+### Performance 
+
+We aimed to look at bias and coverage together with monte carlo standard errors. 
+We also conducted a number of sense checks: 
+- plotting the estimated mean differences 
+- comparing the model-based and empirical standard errors 
+
+We ran 1000 simulations. 
+
+## Simulation set-up 
 
 ```{r message=FALSE, warning=FALSE}
 library(foreach)
 library(dplyr)
 library(tidyr)
 library(ggplot2)
+
 set.seed(1234)
+
 sim <- function(n1,n2,mu1,mu2,sd1,sd2,dgm){
 
 df1 <- data.frame(id = 1:n1, group = 1, value = rnorm(n1,mu1,sd1))
@@ -33,20 +78,8 @@ colnames(output) <- c("t_unequal","lower_unequal","upper_unequal","SE_unequal","
 output
 }
 ```
-Creating the 9 scenarios:
-```{r}
-nsim <- 1000
-dgm <- 1:9
-n1 <- c(rep(100,9))
-n2 <- c(100,200,1000,100,200,1000,100,200,1000)
-mu1 <- c(rep(5,9))
-mu2 <- c(rep(5,9))
-sd1 <- c(rep(10,9))
-sd2 <- c(20,30,5,20,30,5,20,30,5)
-df <- data.frame(n1,n2,mu1,mu2,sd1,sd2)
-df
-```
-Simulation:
+
+Running the simulation:
 ```{r}
 simulation <- foreach(j = dgm) %do% {
   foreach(i=1:nsim, .combine = "rbind") %do% {
@@ -55,7 +88,10 @@ simulation <- foreach(j = dgm) %do% {
 }
 test <- data.frame(do.call(rbind.data.frame, simulation))
 ```
-Check mean:
+
+## Results 
+### Sense checks 
+Check the mean for each DGM in a histogram 
 ```{r message=FALSE, warning=FALSE}
 library(cowplot)
 check_mean <- function(dgm){
@@ -97,7 +133,10 @@ check_mean_se(7)
 check_mean_se(8)
 check_mean_se(9)
 ```
-Check bias of t_equal:
+
+## Results: bias 
+
+bias of t_equal:
 ```{r}
 test %>%
   group_by(DGM) %>%
@@ -107,7 +146,8 @@ test %>%
     modSE = mean(SE_equal)
   )
 ```
-Check bias of t_unequal:
+
+bias of t_unequal:
 ```{r}
 test %>%
   group_by(DGM) %>%
@@ -118,6 +158,8 @@ test %>%
   )
 ```
 
+## Full outputs from rsimsum 
+results for t_equal
 ```{r message=FALSE, warning=FALSE}
 library(rsimsum)
 s <- simsum(data = test, estvarname = "t_equal",
@@ -126,6 +168,7 @@ results_equal <- summary(s)
 results_equal
 ```
 
+results for t_uneqal
 ```{r}
 s <- simsum(data = test, estvarname = "t_unequal",
     se = "SE_unequal", true = 0, by = "DGM") 
@@ -133,3 +176,8 @@ results_unequal <- summary(s)
 results_unequal
 ```
 
+## Interpretation 
+- Surprisingly, the mean and SE was exactly the same for the student and Welsh t-test when the sample size was the same (although p-values were different)
+- 
+- The empirical SE was quite different from the model-based SE 
+- other thoughts??? 
