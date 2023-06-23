@@ -1,5 +1,5 @@
 ---
-title: "Which t-test should I use? A simulation study comparing the Student and Welsh t-test"
+title: "Which t-test should I use? A simulation study comparing the Student and Welch t-test"
 author: "Group 2 - Lily, Daniel, Anna and Em, "
 date: "2023-06-22"
 output: github_document
@@ -21,8 +21,8 @@ n1 <- c(rep(100,9))
 n2 <- c(100,200,1000,100,200,1000,100,200,1000)
 mu1 <- c(rep(5,9))
 mu2 <- c(rep(5,9))
-sd1 <- c(rep(10,9))
-sd2 <- c(20,30,5,20,30,5,20,30,5)
+sd1 <- c(rep(1,9))
+sd2 <- c(2,3,0.5,2,3,0.5,2,3,0.5)
 df <- data.frame(n1,n2,mu1,mu2,sd1,sd2)
 df
 ```
@@ -53,6 +53,7 @@ library(foreach)
 library(dplyr)
 library(tidyr)
 library(ggplot2)
+library(gt)
 
 set.seed(1234)
 
@@ -144,7 +145,7 @@ test %>%
     bias = mean(t_equal) - (0),
     empSE = sqrt(var(t_equal)),
     modSE = mean(SE_equal)
-  )
+  ) %>% gt()
 ```
 
 bias of t_unequal:
@@ -154,11 +155,12 @@ test %>%
   summarise(
     bias = mean(t_unequal) - (0),
     empSE = sqrt(var(t_unequal)),
-    modSE = mean(SE_unequal)
-  )
+    modSE = mean(SE_unequal) 
+  ) %>% gt() 
 ```
 
 ## Full outputs from rsimsum 
+
 results for t_equal
 ```{r message=FALSE, warning=FALSE}
 library(rsimsum)
@@ -176,8 +178,83 @@ results_unequal <- summary(s)
 results_unequal
 ```
 
+comparison of bias
+```{r, echo = FALSE, message = FALSE, warning = FALSE}
+sum_results_equal <- results_equal[[1]] %>% 
+  filter(stat == "bias") %>% 
+  select(est, mcse, DGM)
+
+sum_results_unequal <- results_unequal[[1]] %>% 
+  filter(stat == "bias") %>% 
+  select(est, mcse, DGM)
+
+bias_results <- inner_join(sum_results_equal, sum_results_unequal, 
+                           by = join_by(DGM), 
+                           suffix = c(".equal", ".unequal")) %>% 
+  select(DGM, everything())
+
+gt(bias_results)
+  
+```
+comparison of coverage
+```{r, echo = FALSE}
+
+sum_results_equal <- results_equal[[1]] %>% 
+  filter(stat == "cover") %>% 
+  select(est, mcse, DGM)
+
+sum_results_unequal <- results_unequal[[1]] %>% 
+  filter(stat == "cover") %>% 
+  select(est, mcse, DGM)
+
+cover_results <- inner_join(sum_results_equal, sum_results_unequal, 
+                           by = join_by(DGM), 
+                           suffix = c(".equal", ".unequal")) %>% 
+  select(DGM, everything())
+
+gt(cover_results)
+  
+```
+
+comparison of power
+```{r, echo = FALSE}
+
+sum_results_equal <- results_equal[[1]] %>% 
+  filter(stat == "power") %>% 
+  select(est, mcse, DGM)
+
+sum_results_unequal <- results_unequal[[1]] %>% 
+  filter(stat == "power") %>% 
+  select(est, mcse, DGM)
+
+power_results <- inner_join(sum_results_equal, sum_results_unequal, 
+                           by = join_by(DGM), 
+                           suffix = c(".equal", ".unequal")) %>% 
+  select(DGM, everything())
+
+gt(power_results)
+  
+```
+# visualisations 
+
+
+visualisations 
+
+results for t_equal
+```{r message=FALSE, warning=FALSE}
+library(rsimsum)
+s <- simsum(data = test, estvarname = "t_equal",
+    se = "SE_equal", true = 0, by = "DGM", x = TRUE) 
+results_equal <- summary(s)
+
+autoplot(summary(s), type = "lolly", stats = "bias")
+
+```
+
+if we'd use a long format, we'd easily get very nice comparison plots with hardly any code! 
+it's described here but there was no time: https://cran.r-project.org/web/packages/rsimsum/vignettes/C-plotting.html 
+
 ## Interpretation 
-- Surprisingly, the mean and SE was exactly the same for the student and Welsh t-test when the sample size was the same (although p-values were different)
-- 
-- The empirical SE was quite different from the model-based SE 
+- Surprisingly, the mean and SE was exactly the same for the student and Welsh t-test when the sample size was the same (although p-values were different) 
+- The empirical SE was quite different from the model-based SE when the SD was large 
 - other thoughts??? 
