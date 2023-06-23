@@ -25,19 +25,19 @@ n2 <- c(100,200,1000,100,200,1000,100,200,1000)
 mu1 <- c(rep(5,9))
 mu2 <- c(rep(5,9))
 sd1 <- c(rep(1,9))
-sd2 <- c(2,3,0.5,2,3,0.5,2,3,0.5)
+sd2 <- c(1,3,0.5,1,3,0.5,1,3,0.5)
 df <- data.frame(n1,n2,mu1,mu2,sd1,sd2)
 df
 ```
 
     ##    n1   n2 mu1 mu2 sd1 sd2
-    ## 1 100  100   5   5   1 2.0
+    ## 1 100  100   5   5   1 1.0
     ## 2 100  200   5   5   1 3.0
     ## 3 100 1000   5   5   1 0.5
-    ## 4 100  100   5   5   1 2.0
+    ## 4 100  100   5   5   1 1.0
     ## 5 100  200   5   5   1 3.0
     ## 6 100 1000   5   5   1 0.5
-    ## 7 100  100   5   5   1 2.0
+    ## 7 100  100   5   5   1 1.0
     ## 8 100  200   5   5   1 3.0
     ## 9 100 1000   5   5   1 0.5
 
@@ -81,13 +81,15 @@ df1 <- data.frame(id = 1:n1, group = 1, value = rnorm(n1,mu1,sd1))
 df2 <- data.frame(id = 1:n2, group = 2, value = rnorm(n2,mu2,sd2))
 
 ttest <- t.test(y = df1$value, x = df2$value, paired = FALSE, var.equal = FALSE)
-diff_means <- ttest$statistic
+means <- ttest$estimate
+diff_means <- means[1] - means[2]
 CI_lower <- ttest$conf.int[1]
 CI_upper <- ttest$conf.int[2]
 SE <- ttest$stderr
 
 ttest1 <- t.test(y = df1$value, x = df2$value, var.equal  = TRUE, paired = FALSE)
-diff_means1 <- ttest1$statistic
+means1 <- ttest1$estimate
+diff_means1 <- means1[1] - means1[2]
 CI_lower1 <- ttest1$conf.int[1]
 CI_upper1 <- ttest1$conf.int[2]
 SE1 <- ttest1$stderr
@@ -678,40 +680,40 @@ test %>%
   </thead>
   <tbody class="gt_table_body">
     <tr><td headers="DGM" class="gt_row gt_right">1</td>
-<td headers="bias" class="gt_row gt_right">0.0293645068</td>
-<td headers="empSE" class="gt_row gt_right">1.0020805</td>
-<td headers="modSE" class="gt_row gt_right">0.22243360</td></tr>
+<td headers="bias" class="gt_row gt_right">0.0021156108</td>
+<td headers="empSE" class="gt_row gt_right">0.14063682</td>
+<td headers="modSE" class="gt_row gt_right">0.14088492</td></tr>
     <tr><td headers="DGM" class="gt_row gt_right">2</td>
-<td headers="bias" class="gt_row gt_right">-0.0003790629</td>
-<td headers="empSE" class="gt_row gt_right">0.7488122</td>
+<td headers="bias" class="gt_row gt_right">-0.0001901936</td>
+<td headers="empSE" class="gt_row gt_right">0.23090400</td>
 <td headers="modSE" class="gt_row gt_right">0.30921671</td></tr>
     <tr><td headers="DGM" class="gt_row gt_right">3</td>
-<td headers="bias" class="gt_row gt_right">-0.1100355421</td>
-<td headers="empSE" class="gt_row gt_right">1.6424344</td>
+<td headers="bias" class="gt_row gt_right">-0.0064804757</td>
+<td headers="empSE" class="gt_row gt_right">0.09706351</td>
 <td headers="modSE" class="gt_row gt_right">0.05914564</td></tr>
     <tr><td headers="DGM" class="gt_row gt_right">4</td>
-<td headers="bias" class="gt_row gt_right">-0.0628298633</td>
-<td headers="empSE" class="gt_row gt_right">0.9842461</td>
-<td headers="modSE" class="gt_row gt_right">0.22329335</td></tr>
+<td headers="bias" class="gt_row gt_right">-0.0067527539</td>
+<td headers="empSE" class="gt_row gt_right">0.13968681</td>
+<td headers="modSE" class="gt_row gt_right">0.14134089</td></tr>
     <tr><td headers="DGM" class="gt_row gt_right">5</td>
-<td headers="bias" class="gt_row gt_right">-0.0149354363</td>
-<td headers="empSE" class="gt_row gt_right">0.7746117</td>
+<td headers="bias" class="gt_row gt_right">-0.0046913423</td>
+<td headers="empSE" class="gt_row gt_right">0.23724956</td>
 <td headers="modSE" class="gt_row gt_right">0.30785287</td></tr>
     <tr><td headers="DGM" class="gt_row gt_right">6</td>
-<td headers="bias" class="gt_row gt_right">-0.0406408320</td>
-<td headers="empSE" class="gt_row gt_right">1.7335255</td>
+<td headers="bias" class="gt_row gt_right">-0.0025085231</td>
+<td headers="empSE" class="gt_row gt_right">0.10238982</td>
 <td headers="modSE" class="gt_row gt_right">0.05913790</td></tr>
     <tr><td headers="DGM" class="gt_row gt_right">7</td>
-<td headers="bias" class="gt_row gt_right">-0.0345941222</td>
-<td headers="empSE" class="gt_row gt_right">0.9983962</td>
-<td headers="modSE" class="gt_row gt_right">0.22311885</td></tr>
+<td headers="bias" class="gt_row gt_right">-0.0052361504</td>
+<td headers="empSE" class="gt_row gt_right">0.14068793</td>
+<td headers="modSE" class="gt_row gt_right">0.14136916</td></tr>
     <tr><td headers="DGM" class="gt_row gt_right">8</td>
-<td headers="bias" class="gt_row gt_right">0.0079421328</td>
-<td headers="empSE" class="gt_row gt_right">0.7863930</td>
+<td headers="bias" class="gt_row gt_right">0.0026819331</td>
+<td headers="empSE" class="gt_row gt_right">0.24108243</td>
 <td headers="modSE" class="gt_row gt_right">0.30793609</td></tr>
     <tr><td headers="DGM" class="gt_row gt_right">9</td>
-<td headers="bias" class="gt_row gt_right">0.0303026752</td>
-<td headers="empSE" class="gt_row gt_right">1.6869830</td>
+<td headers="bias" class="gt_row gt_right">0.0017617665</td>
+<td headers="empSE" class="gt_row gt_right">0.09936470</td>
 <td headers="modSE" class="gt_row gt_right">0.05901525</td></tr>
   </tbody>
   
@@ -1154,40 +1156,40 @@ test %>%
   </thead>
   <tbody class="gt_table_body">
     <tr><td headers="DGM" class="gt_row gt_right">1</td>
-<td headers="bias" class="gt_row gt_right">0.0293645068</td>
-<td headers="empSE" class="gt_row gt_right">1.0020805</td>
-<td headers="modSE" class="gt_row gt_right">0.2224336</td></tr>
+<td headers="bias" class="gt_row gt_right">0.0021156108</td>
+<td headers="empSE" class="gt_row gt_right">0.14063682</td>
+<td headers="modSE" class="gt_row gt_right">0.1408849</td></tr>
     <tr><td headers="DGM" class="gt_row gt_right">2</td>
-<td headers="bias" class="gt_row gt_right">-0.0002378859</td>
-<td headers="empSE" class="gt_row gt_right">0.9835288</td>
+<td headers="bias" class="gt_row gt_right">-0.0001901936</td>
+<td headers="empSE" class="gt_row gt_right">0.23090400</td>
 <td headers="modSE" class="gt_row gt_right">0.2350815</td></tr>
     <tr><td headers="DGM" class="gt_row gt_right">3</td>
-<td headers="bias" class="gt_row gt_right">-0.0653317546</td>
-<td headers="empSE" class="gt_row gt_right">0.9665023</td>
+<td headers="bias" class="gt_row gt_right">-0.0064804757</td>
+<td headers="empSE" class="gt_row gt_right">0.09706351</td>
 <td headers="modSE" class="gt_row gt_right">0.1010537</td></tr>
     <tr><td headers="DGM" class="gt_row gt_right">4</td>
-<td headers="bias" class="gt_row gt_right">-0.0628298633</td>
-<td headers="empSE" class="gt_row gt_right">0.9842461</td>
-<td headers="modSE" class="gt_row gt_right">0.2232934</td></tr>
+<td headers="bias" class="gt_row gt_right">-0.0067527539</td>
+<td headers="empSE" class="gt_row gt_right">0.13968681</td>
+<td headers="modSE" class="gt_row gt_right">0.1413409</td></tr>
     <tr><td headers="DGM" class="gt_row gt_right">5</td>
-<td headers="bias" class="gt_row gt_right">-0.0199426706</td>
-<td headers="empSE" class="gt_row gt_right">1.0173922</td>
+<td headers="bias" class="gt_row gt_right">-0.0046913423</td>
+<td headers="empSE" class="gt_row gt_right">0.23724956</td>
 <td headers="modSE" class="gt_row gt_right">0.2341172</td></tr>
     <tr><td headers="DGM" class="gt_row gt_right">6</td>
-<td headers="bias" class="gt_row gt_right">-0.0216929624</td>
-<td headers="empSE" class="gt_row gt_right">1.0208694</td>
+<td headers="bias" class="gt_row gt_right">-0.0025085231</td>
+<td headers="empSE" class="gt_row gt_right">0.10238982</td>
 <td headers="modSE" class="gt_row gt_right">0.1011853</td></tr>
     <tr><td headers="DGM" class="gt_row gt_right">7</td>
-<td headers="bias" class="gt_row gt_right">-0.0345941222</td>
-<td headers="empSE" class="gt_row gt_right">0.9983962</td>
-<td headers="modSE" class="gt_row gt_right">0.2231188</td></tr>
+<td headers="bias" class="gt_row gt_right">-0.0052361504</td>
+<td headers="empSE" class="gt_row gt_right">0.14068793</td>
+<td headers="modSE" class="gt_row gt_right">0.1413692</td></tr>
     <tr><td headers="DGM" class="gt_row gt_right">8</td>
-<td headers="bias" class="gt_row gt_right">0.0105355090</td>
-<td headers="empSE" class="gt_row gt_right">1.0325606</td>
+<td headers="bias" class="gt_row gt_right">0.0026819331</td>
+<td headers="empSE" class="gt_row gt_right">0.24108243</td>
 <td headers="modSE" class="gt_row gt_right">0.2343160</td></tr>
     <tr><td headers="DGM" class="gt_row gt_right">9</td>
-<td headers="bias" class="gt_row gt_right">0.0173701200</td>
-<td headers="empSE" class="gt_row gt_right">0.9969418</td>
+<td headers="bias" class="gt_row gt_right">0.0017617665</td>
+<td headers="empSE" class="gt_row gt_right">0.09936470</td>
 <td headers="modSE" class="gt_row gt_right">0.1007391</td></tr>
   </tbody>
   
@@ -1224,147 +1226,147 @@ results_equal
     ## 
     ## Average point estimate:
     ##  Estimate DGM
-    ##    0.0294   1
-    ##   -0.0004   2
-    ##   -0.1100   3
-    ##   -0.0628   4
-    ##   -0.0149   5
-    ##   -0.0406   6
-    ##   -0.0346   7
-    ##    0.0079   8
-    ##    0.0303   9
+    ##    0.0021   1
+    ##   -0.0002   2
+    ##   -0.0065   3
+    ##   -0.0068   4
+    ##   -0.0047   5
+    ##   -0.0025   6
+    ##   -0.0052   7
+    ##    0.0027   8
+    ##    0.0018   9
     ## 
     ## Median point estimate:
     ##  Estimate DGM
-    ##    0.0131   1
-    ##   -0.0017   2
-    ##   -0.1489   3
-    ##   -0.0822   4
-    ##   -0.0132   5
-    ##   -0.0673   6
-    ##   -0.0187   7
-    ##    0.0235   8
-    ##   -0.0255   9
+    ##   -0.0019   1
+    ##   -0.0005   2
+    ##   -0.0087   3
+    ##   -0.0112   4
+    ##   -0.0040   5
+    ##   -0.0040   6
+    ##   -0.0025   7
+    ##    0.0070   8
+    ##   -0.0015   9
     ## 
     ## Average variance:
     ##  Estimate DGM
-    ##    0.0496   1
+    ##    0.0199   1
     ##    0.0958   2
     ##    0.0035   3
-    ##    0.0500   4
+    ##    0.0200   4
     ##    0.0950   5
     ##    0.0035   6
-    ##    0.0499   7
+    ##    0.0200   7
     ##    0.0950   8
     ##    0.0035   9
     ## 
     ## Median variance:
     ##  Estimate DGM
-    ##    0.0495   1
+    ##    0.0199   1
     ##    0.0959   2
     ##    0.0035   3
-    ##    0.0497   4
+    ##    0.0200   4
     ##    0.0944   5
     ##    0.0035   6
-    ##    0.0499   7
+    ##    0.0201   7
     ##    0.0947   8
     ##    0.0035   9
     ## 
     ## Bias in point estimate:
     ##          Estimate DGM
-    ##   0.0294 (0.0317)   1
-    ##  -0.0004 (0.0237)   2
-    ##  -0.1100 (0.0519)   3
-    ##  -0.0628 (0.0311)   4
-    ##  -0.0149 (0.0245)   5
-    ##  -0.0406 (0.0548)   6
-    ##  -0.0346 (0.0316)   7
-    ##   0.0079 (0.0249)   8
-    ##   0.0303 (0.0533)   9
+    ##   0.0021 (0.0044)   1
+    ##  -0.0002 (0.0073)   2
+    ##  -0.0065 (0.0031)   3
+    ##  -0.0068 (0.0044)   4
+    ##  -0.0047 (0.0075)   5
+    ##  -0.0025 (0.0032)   6
+    ##  -0.0052 (0.0044)   7
+    ##   0.0027 (0.0076)   8
+    ##   0.0018 (0.0031)   9
     ## 
     ## Empirical standard error:
     ##         Estimate DGM
-    ##  1.0021 (0.0224)   1
-    ##  0.7488 (0.0168)   2
-    ##  1.6424 (0.0367)   3
-    ##  0.9842 (0.0220)   4
-    ##  0.7746 (0.0173)   5
-    ##  1.7335 (0.0388)   6
-    ##  0.9984 (0.0223)   7
-    ##  0.7864 (0.0176)   8
-    ##  1.6870 (0.0377)   9
+    ##  0.1406 (0.0031)   1
+    ##  0.2309 (0.0052)   2
+    ##  0.0971 (0.0022)   3
+    ##  0.1397 (0.0031)   4
+    ##  0.2372 (0.0053)   5
+    ##  0.1024 (0.0023)   6
+    ##  0.1407 (0.0031)   7
+    ##  0.2411 (0.0054)   8
+    ##  0.0994 (0.0022)   9
     ## 
     ## Mean squared error:
     ##         Estimate DGM
-    ##  1.0040 (0.0497)   1
-    ##  0.5602 (0.0255)   2
-    ##  2.7070 (0.1142)   3
-    ##  0.9717 (0.0448)   4
-    ##  0.5996 (0.0276)   5
-    ##  3.0038 (0.1314)   6
-    ##  0.9970 (0.0447)   7
-    ##  0.6179 (0.0282)   8
-    ##  2.8440 (0.1229)   9
+    ##  0.0198 (0.0009)   1
+    ##  0.0533 (0.0024)   2
+    ##  0.0095 (0.0004)   3
+    ##  0.0195 (0.0009)   4
+    ##  0.0563 (0.0026)   5
+    ##  0.0105 (0.0005)   6
+    ##  0.0198 (0.0009)   7
+    ##  0.0581 (0.0026)   8
+    ##  0.0099 (0.0004)   9
     ## 
     ## Model-based standard error:
     ##         Estimate DGM
-    ##  0.2228 (0.0004)   1
+    ##  0.1411 (0.0002)   1
     ##  0.3095 (0.0004)   2
     ##  0.0592 (0.0000)   3
-    ##  0.2237 (0.0004)   4
+    ##  0.1415 (0.0002)   4
     ##  0.3082 (0.0005)   5
     ##  0.0592 (0.0000)   6
-    ##  0.2235 (0.0004)   7
+    ##  0.1415 (0.0002)   7
     ##  0.3083 (0.0005)   8
     ##  0.0590 (0.0000)   9
     ## 
     ## Relative % error in standard error:
     ##           Estimate DGM
-    ##  -77.7649 (0.4990)   1
-    ##  -58.6656 (0.9263)   2
-    ##  -96.3978 (0.0806)   3
-    ##  -77.2733 (0.5101)   4
-    ##  -60.2087 (0.8922)   5
-    ##  -96.5875 (0.0764)   6
-    ##  -77.6147 (0.5023)   7
-    ##  -60.7979 (0.8788)   8
-    ##  -96.5006 (0.0783)   9
+    ##    0.3034 (2.2491)   1
+    ##   34.0457 (3.0040)   2
+    ##  -39.0458 (1.3642)   3
+    ##    1.3119 (2.2717)   4
+    ##   29.9171 (2.9129)   5
+    ##  -42.2247 (1.2930)   6
+    ##    0.6059 (2.2556)   7
+    ##   27.8742 (2.8665)   8
+    ##  -40.5880 (1.3297)   9
     ## 
     ## Coverage of nominal 95% confidence interval:
     ##         Estimate DGM
-    ##  0.3620 (0.0152)   1
-    ##  0.5810 (0.0156)   2
-    ##  0.0470 (0.0067)   3
-    ##  0.3410 (0.0150)   4
-    ##  0.5690 (0.0157)   5
-    ##  0.0650 (0.0078)   6
-    ##  0.3370 (0.0149)   7
-    ##  0.5610 (0.0157)   8
-    ##  0.0600 (0.0075)   9
+    ##  0.9480 (0.0070)   1
+    ##  0.9880 (0.0034)   2
+    ##  0.7680 (0.0133)   3
+    ##  0.9580 (0.0063)   4
+    ##  0.9830 (0.0041)   5
+    ##  0.7450 (0.0138)   6
+    ##  0.9470 (0.0071)   7
+    ##  0.9850 (0.0038)   8
+    ##  0.7430 (0.0138)   9
     ## 
     ## Bias-eliminated coverage of nominal 95% confidence interval:
     ##         Estimate DGM
-    ##  0.3670 (0.0152)   1
-    ##  0.5810 (0.0156)   2
-    ##  0.0460 (0.0066)   3
-    ##  0.3430 (0.0150)   4
-    ##  0.5680 (0.0157)   5
-    ##  0.0700 (0.0081)   6
-    ##  0.3360 (0.0149)   7
-    ##  0.5590 (0.0157)   8
-    ##  0.0640 (0.0077)   9
+    ##  0.9470 (0.0071)   1
+    ##  0.9880 (0.0034)   2
+    ##  0.7730 (0.0132)   3
+    ##  0.9560 (0.0065)   4
+    ##  0.9850 (0.0038)   5
+    ##  0.7380 (0.0139)   6
+    ##  0.9480 (0.0070)   7
+    ##  0.9850 (0.0038)   8
+    ##  0.7470 (0.0137)   9
     ## 
     ## Power of 5% level test:
     ##         Estimate DGM
-    ##  0.6380 (0.0152)   1
-    ##  0.4190 (0.0156)   2
-    ##  0.9530 (0.0067)   3
-    ##  0.6590 (0.0150)   4
-    ##  0.4310 (0.0157)   5
-    ##  0.9350 (0.0078)   6
-    ##  0.6630 (0.0149)   7
-    ##  0.4390 (0.0157)   8
-    ##  0.9400 (0.0075)   9
+    ##  0.0520 (0.0070)   1
+    ##  0.0120 (0.0034)   2
+    ##  0.2320 (0.0133)   3
+    ##  0.0420 (0.0063)   4
+    ##  0.0170 (0.0041)   5
+    ##  0.2550 (0.0138)   6
+    ##  0.0530 (0.0071)   7
+    ##  0.0150 (0.0038)   8
+    ##  0.2570 (0.0138)   9
 
 results for t_uneqal
 
@@ -1392,147 +1394,147 @@ results_unequal
     ## 
     ## Average point estimate:
     ##  Estimate DGM
-    ##    0.0294   1
+    ##    0.0021   1
     ##   -0.0002   2
-    ##   -0.0653   3
-    ##   -0.0628   4
-    ##   -0.0199   5
-    ##   -0.0217   6
-    ##   -0.0346   7
-    ##    0.0105   8
-    ##    0.0174   9
+    ##   -0.0065   3
+    ##   -0.0068   4
+    ##   -0.0047   5
+    ##   -0.0025   6
+    ##   -0.0052   7
+    ##    0.0027   8
+    ##    0.0018   9
     ## 
     ## Median point estimate:
     ##  Estimate DGM
-    ##    0.0131   1
-    ##   -0.0023   2
-    ##   -0.0833   3
-    ##   -0.0822   4
-    ##   -0.0171   5
-    ##   -0.0397   6
-    ##   -0.0187   7
-    ##    0.0310   8
-    ##   -0.0143   9
+    ##   -0.0019   1
+    ##   -0.0005   2
+    ##   -0.0087   3
+    ##   -0.0112   4
+    ##   -0.0040   5
+    ##   -0.0040   6
+    ##   -0.0025   7
+    ##    0.0070   8
+    ##   -0.0015   9
     ## 
     ## Average variance:
     ##  Estimate DGM
-    ##    0.0496   1
+    ##    0.0199   1
     ##    0.0554   2
     ##    0.0103   3
-    ##    0.0500   4
+    ##    0.0200   4
     ##    0.0549   5
     ##    0.0103   6
-    ##    0.0499   7
+    ##    0.0200   7
     ##    0.0550   8
     ##    0.0102   9
     ## 
     ## Median variance:
     ##  Estimate DGM
-    ##    0.0495   1
+    ##    0.0199   1
     ##    0.0552   2
     ##    0.0102   3
-    ##    0.0497   4
+    ##    0.0200   4
     ##    0.0547   5
     ##    0.0102   6
-    ##    0.0499   7
+    ##    0.0201   7
     ##    0.0548   8
     ##    0.0102   9
     ## 
     ## Bias in point estimate:
     ##          Estimate DGM
-    ##   0.0294 (0.0317)   1
-    ##  -0.0002 (0.0311)   2
-    ##  -0.0653 (0.0306)   3
-    ##  -0.0628 (0.0311)   4
-    ##  -0.0199 (0.0322)   5
-    ##  -0.0217 (0.0323)   6
-    ##  -0.0346 (0.0316)   7
-    ##   0.0105 (0.0327)   8
-    ##   0.0174 (0.0315)   9
+    ##   0.0021 (0.0044)   1
+    ##  -0.0002 (0.0073)   2
+    ##  -0.0065 (0.0031)   3
+    ##  -0.0068 (0.0044)   4
+    ##  -0.0047 (0.0075)   5
+    ##  -0.0025 (0.0032)   6
+    ##  -0.0052 (0.0044)   7
+    ##   0.0027 (0.0076)   8
+    ##   0.0018 (0.0031)   9
     ## 
     ## Empirical standard error:
     ##         Estimate DGM
-    ##  1.0021 (0.0224)   1
-    ##  0.9835 (0.0220)   2
-    ##  0.9665 (0.0216)   3
-    ##  0.9842 (0.0220)   4
-    ##  1.0174 (0.0228)   5
-    ##  1.0209 (0.0228)   6
-    ##  0.9984 (0.0223)   7
-    ##  1.0326 (0.0231)   8
-    ##  0.9969 (0.0223)   9
+    ##  0.1406 (0.0031)   1
+    ##  0.2309 (0.0052)   2
+    ##  0.0971 (0.0022)   3
+    ##  0.1397 (0.0031)   4
+    ##  0.2372 (0.0053)   5
+    ##  0.1024 (0.0023)   6
+    ##  0.1407 (0.0031)   7
+    ##  0.2411 (0.0054)   8
+    ##  0.0994 (0.0022)   9
     ## 
     ## Mean squared error:
     ##         Estimate DGM
-    ##  1.0040 (0.0497)   1
-    ##  0.9664 (0.0438)   2
-    ##  0.9375 (0.0400)   3
-    ##  0.9717 (0.0448)   4
-    ##  1.0344 (0.0474)   5
-    ##  1.0416 (0.0462)   6
-    ##  0.9970 (0.0447)   7
-    ##  1.0652 (0.0483)   8
-    ##  0.9932 (0.0438)   9
+    ##  0.0198 (0.0009)   1
+    ##  0.0533 (0.0024)   2
+    ##  0.0095 (0.0004)   3
+    ##  0.0195 (0.0009)   4
+    ##  0.0563 (0.0026)   5
+    ##  0.0105 (0.0005)   6
+    ##  0.0198 (0.0009)   7
+    ##  0.0581 (0.0026)   8
+    ##  0.0099 (0.0004)   9
     ## 
     ## Model-based standard error:
     ##         Estimate DGM
-    ##  0.2228 (0.0004)   1
+    ##  0.1411 (0.0002)   1
     ##  0.2353 (0.0003)   2
     ##  0.1013 (0.0002)   3
-    ##  0.2237 (0.0004)   4
+    ##  0.1415 (0.0002)   4
     ##  0.2343 (0.0003)   5
     ##  0.1014 (0.0002)   6
-    ##  0.2235 (0.0004)   7
+    ##  0.1415 (0.0002)   7
     ##  0.2345 (0.0003)   8
     ##  0.1010 (0.0002)   9
     ## 
     ## Relative % error in standard error:
-    ##           Estimate DGM
-    ##  -77.7649 (0.4990)   1
-    ##  -76.0790 (0.5359)   2
-    ##  -89.5195 (0.2355)   3
-    ##  -77.2733 (0.5101)   4
-    ##  -76.9659 (0.5162)   5
-    ##  -90.0648 (0.2233)   6
-    ##  -77.6147 (0.5023)   7
-    ##  -77.2864 (0.5090)   8
-    ##  -89.8703 (0.2277)   9
+    ##          Estimate DGM
+    ##   0.3034 (2.2491)   1
+    ##   1.8909 (2.2826)   2
+    ##   4.3586 (2.3453)   3
+    ##   1.3119 (2.2717)   4
+    ##  -1.2235 (2.2136)   5
+    ##  -0.9415 (2.2261)   6
+    ##   0.6059 (2.2556)   7
+    ##  -2.7170 (2.1799)   8
+    ##   1.6331 (2.2843)   9
     ## 
     ## Coverage of nominal 95% confidence interval:
     ##         Estimate DGM
-    ##  0.3620 (0.0152)   1
-    ##  0.3560 (0.0151)   2
-    ##  0.1540 (0.0114)   3
-    ##  0.3410 (0.0150)   4
-    ##  0.3550 (0.0151)   5
-    ##  0.1670 (0.0118)   6
-    ##  0.3370 (0.0149)   7
-    ##  0.3380 (0.0150)   8
-    ##  0.1750 (0.0120)   9
+    ##  0.9480 (0.0070)   1
+    ##  0.9580 (0.0063)   2
+    ##  0.9590 (0.0063)   3
+    ##  0.9580 (0.0063)   4
+    ##  0.9430 (0.0073)   5
+    ##  0.9420 (0.0074)   6
+    ##  0.9470 (0.0071)   7
+    ##  0.9430 (0.0073)   8
+    ##  0.9570 (0.0064)   9
     ## 
     ## Bias-eliminated coverage of nominal 95% confidence interval:
     ##         Estimate DGM
-    ##  0.3670 (0.0152)   1
-    ##  0.3560 (0.0151)   2
-    ##  0.1500 (0.0113)   3
-    ##  0.3430 (0.0150)   4
-    ##  0.3550 (0.0151)   5
-    ##  0.1660 (0.0118)   6
-    ##  0.3360 (0.0149)   7
-    ##  0.3430 (0.0150)   8
-    ##  0.1730 (0.0120)   9
+    ##  0.9470 (0.0071)   1
+    ##  0.9580 (0.0063)   2
+    ##  0.9580 (0.0063)   3
+    ##  0.9560 (0.0065)   4
+    ##  0.9440 (0.0073)   5
+    ##  0.9400 (0.0075)   6
+    ##  0.9480 (0.0070)   7
+    ##  0.9430 (0.0073)   8
+    ##  0.9580 (0.0063)   9
     ## 
     ## Power of 5% level test:
     ##         Estimate DGM
-    ##  0.6380 (0.0152)   1
-    ##  0.6440 (0.0151)   2
-    ##  0.8460 (0.0114)   3
-    ##  0.6590 (0.0150)   4
-    ##  0.6450 (0.0151)   5
-    ##  0.8330 (0.0118)   6
-    ##  0.6630 (0.0149)   7
-    ##  0.6620 (0.0150)   8
-    ##  0.8250 (0.0120)   9
+    ##  0.0520 (0.0070)   1
+    ##  0.0420 (0.0063)   2
+    ##  0.0410 (0.0063)   3
+    ##  0.0420 (0.0063)   4
+    ##  0.0570 (0.0073)   5
+    ##  0.0580 (0.0074)   6
+    ##  0.0530 (0.0071)   7
+    ##  0.0570 (0.0073)   8
+    ##  0.0430 (0.0064)   9
 
 comparison of bias
 
@@ -1960,50 +1962,50 @@ comparison of bias
   </thead>
   <tbody class="gt_table_body">
     <tr><td headers="DGM" class="gt_row gt_center">1</td>
-<td headers="est.equal" class="gt_row gt_right">0.0293645068</td>
-<td headers="mcse.equal" class="gt_row gt_right">0.03168857</td>
-<td headers="est.unequal" class="gt_row gt_right">0.0293645068</td>
-<td headers="mcse.unequal" class="gt_row gt_right">0.03168857</td></tr>
+<td headers="est.equal" class="gt_row gt_right">0.0021156108</td>
+<td headers="mcse.equal" class="gt_row gt_right">0.004447327</td>
+<td headers="est.unequal" class="gt_row gt_right">0.0021156108</td>
+<td headers="mcse.unequal" class="gt_row gt_right">0.004447327</td></tr>
     <tr><td headers="DGM" class="gt_row gt_center">2</td>
-<td headers="est.equal" class="gt_row gt_right">-0.0003790629</td>
-<td headers="mcse.equal" class="gt_row gt_right">0.02367952</td>
-<td headers="est.unequal" class="gt_row gt_right">-0.0002378859</td>
-<td headers="mcse.unequal" class="gt_row gt_right">0.03110191</td></tr>
+<td headers="est.equal" class="gt_row gt_right">-0.0001901936</td>
+<td headers="mcse.equal" class="gt_row gt_right">0.007301825</td>
+<td headers="est.unequal" class="gt_row gt_right">-0.0001901936</td>
+<td headers="mcse.unequal" class="gt_row gt_right">0.007301825</td></tr>
     <tr><td headers="DGM" class="gt_row gt_center">3</td>
-<td headers="est.equal" class="gt_row gt_right">-0.1100355421</td>
-<td headers="mcse.equal" class="gt_row gt_right">0.05193833</td>
-<td headers="est.unequal" class="gt_row gt_right">-0.0653317546</td>
-<td headers="mcse.unequal" class="gt_row gt_right">0.03056349</td></tr>
+<td headers="est.equal" class="gt_row gt_right">-0.0064804757</td>
+<td headers="mcse.equal" class="gt_row gt_right">0.003069418</td>
+<td headers="est.unequal" class="gt_row gt_right">-0.0064804757</td>
+<td headers="mcse.unequal" class="gt_row gt_right">0.003069418</td></tr>
     <tr><td headers="DGM" class="gt_row gt_center">4</td>
-<td headers="est.equal" class="gt_row gt_right">-0.0628298633</td>
-<td headers="mcse.equal" class="gt_row gt_right">0.03112459</td>
-<td headers="est.unequal" class="gt_row gt_right">-0.0628298633</td>
-<td headers="mcse.unequal" class="gt_row gt_right">0.03112459</td></tr>
+<td headers="est.equal" class="gt_row gt_right">-0.0067527539</td>
+<td headers="mcse.equal" class="gt_row gt_right">0.004417285</td>
+<td headers="est.unequal" class="gt_row gt_right">-0.0067527539</td>
+<td headers="mcse.unequal" class="gt_row gt_right">0.004417285</td></tr>
     <tr><td headers="DGM" class="gt_row gt_center">5</td>
-<td headers="est.equal" class="gt_row gt_right">-0.0149354363</td>
-<td headers="mcse.equal" class="gt_row gt_right">0.02449537</td>
-<td headers="est.unequal" class="gt_row gt_right">-0.0199426706</td>
-<td headers="mcse.unequal" class="gt_row gt_right">0.03217277</td></tr>
+<td headers="est.equal" class="gt_row gt_right">-0.0046913423</td>
+<td headers="mcse.equal" class="gt_row gt_right">0.007502490</td>
+<td headers="est.unequal" class="gt_row gt_right">-0.0046913423</td>
+<td headers="mcse.unequal" class="gt_row gt_right">0.007502490</td></tr>
     <tr><td headers="DGM" class="gt_row gt_center">6</td>
-<td headers="est.equal" class="gt_row gt_right">-0.0406408320</td>
-<td headers="mcse.equal" class="gt_row gt_right">0.05481889</td>
-<td headers="est.unequal" class="gt_row gt_right">-0.0216929624</td>
-<td headers="mcse.unequal" class="gt_row gt_right">0.03228272</td></tr>
+<td headers="est.equal" class="gt_row gt_right">-0.0025085231</td>
+<td headers="mcse.equal" class="gt_row gt_right">0.003237851</td>
+<td headers="est.unequal" class="gt_row gt_right">-0.0025085231</td>
+<td headers="mcse.unequal" class="gt_row gt_right">0.003237851</td></tr>
     <tr><td headers="DGM" class="gt_row gt_center">7</td>
-<td headers="est.equal" class="gt_row gt_right">-0.0345941222</td>
-<td headers="mcse.equal" class="gt_row gt_right">0.03157206</td>
-<td headers="est.unequal" class="gt_row gt_right">-0.0345941222</td>
-<td headers="mcse.unequal" class="gt_row gt_right">0.03157206</td></tr>
+<td headers="est.equal" class="gt_row gt_right">-0.0052361504</td>
+<td headers="mcse.equal" class="gt_row gt_right">0.004448943</td>
+<td headers="est.unequal" class="gt_row gt_right">-0.0052361504</td>
+<td headers="mcse.unequal" class="gt_row gt_right">0.004448943</td></tr>
     <tr><td headers="DGM" class="gt_row gt_center">8</td>
-<td headers="est.equal" class="gt_row gt_right">0.0079421328</td>
-<td headers="mcse.equal" class="gt_row gt_right">0.02486793</td>
-<td headers="est.unequal" class="gt_row gt_right">0.0105355090</td>
-<td headers="mcse.unequal" class="gt_row gt_right">0.03265243</td></tr>
+<td headers="est.equal" class="gt_row gt_right">0.0026819331</td>
+<td headers="mcse.equal" class="gt_row gt_right">0.007623696</td>
+<td headers="est.unequal" class="gt_row gt_right">0.0026819331</td>
+<td headers="mcse.unequal" class="gt_row gt_right">0.007623696</td></tr>
     <tr><td headers="DGM" class="gt_row gt_center">9</td>
-<td headers="est.equal" class="gt_row gt_right">0.0303026752</td>
-<td headers="mcse.equal" class="gt_row gt_right">0.05334709</td>
-<td headers="est.unequal" class="gt_row gt_right">0.0173701200</td>
-<td headers="mcse.unequal" class="gt_row gt_right">0.03152607</td></tr>
+<td headers="est.equal" class="gt_row gt_right">0.0017617665</td>
+<td headers="mcse.equal" class="gt_row gt_right">0.003142188</td>
+<td headers="est.unequal" class="gt_row gt_right">0.0017617665</td>
+<td headers="mcse.unequal" class="gt_row gt_right">0.003142188</td></tr>
   </tbody>
   
   
@@ -2436,50 +2438,50 @@ comparison of coverage
   </thead>
   <tbody class="gt_table_body">
     <tr><td headers="DGM" class="gt_row gt_center">1</td>
-<td headers="est.equal" class="gt_row gt_right">0.362</td>
-<td headers="mcse.equal" class="gt_row gt_right">0.015197237</td>
-<td headers="est.unequal" class="gt_row gt_right">0.362</td>
-<td headers="mcse.unequal" class="gt_row gt_right">0.01519724</td></tr>
+<td headers="est.equal" class="gt_row gt_right">0.948</td>
+<td headers="mcse.equal" class="gt_row gt_right">0.007021111</td>
+<td headers="est.unequal" class="gt_row gt_right">0.948</td>
+<td headers="mcse.unequal" class="gt_row gt_right">0.007021111</td></tr>
     <tr><td headers="DGM" class="gt_row gt_center">2</td>
-<td headers="est.equal" class="gt_row gt_right">0.581</td>
-<td headers="mcse.equal" class="gt_row gt_right">0.015602532</td>
-<td headers="est.unequal" class="gt_row gt_right">0.356</td>
-<td headers="mcse.unequal" class="gt_row gt_right">0.01514147</td></tr>
+<td headers="est.equal" class="gt_row gt_right">0.988</td>
+<td headers="mcse.equal" class="gt_row gt_right">0.003443254</td>
+<td headers="est.unequal" class="gt_row gt_right">0.958</td>
+<td headers="mcse.unequal" class="gt_row gt_right">0.006343185</td></tr>
     <tr><td headers="DGM" class="gt_row gt_center">3</td>
-<td headers="est.equal" class="gt_row gt_right">0.047</td>
-<td headers="mcse.equal" class="gt_row gt_right">0.006692608</td>
-<td headers="est.unequal" class="gt_row gt_right">0.154</td>
-<td headers="mcse.unequal" class="gt_row gt_right">0.01141420</td></tr>
+<td headers="est.equal" class="gt_row gt_right">0.768</td>
+<td headers="mcse.equal" class="gt_row gt_right">0.013348258</td>
+<td headers="est.unequal" class="gt_row gt_right">0.959</td>
+<td headers="mcse.unequal" class="gt_row gt_right">0.006270486</td></tr>
     <tr><td headers="DGM" class="gt_row gt_center">4</td>
-<td headers="est.equal" class="gt_row gt_right">0.341</td>
-<td headers="mcse.equal" class="gt_row gt_right">0.014990630</td>
-<td headers="est.unequal" class="gt_row gt_right">0.341</td>
-<td headers="mcse.unequal" class="gt_row gt_right">0.01499063</td></tr>
+<td headers="est.equal" class="gt_row gt_right">0.958</td>
+<td headers="mcse.equal" class="gt_row gt_right">0.006343185</td>
+<td headers="est.unequal" class="gt_row gt_right">0.958</td>
+<td headers="mcse.unequal" class="gt_row gt_right">0.006343185</td></tr>
     <tr><td headers="DGM" class="gt_row gt_center">5</td>
-<td headers="est.equal" class="gt_row gt_right">0.569</td>
-<td headers="mcse.equal" class="gt_row gt_right">0.015660109</td>
-<td headers="est.unequal" class="gt_row gt_right">0.355</td>
-<td headers="mcse.unequal" class="gt_row gt_right">0.01513192</td></tr>
+<td headers="est.equal" class="gt_row gt_right">0.983</td>
+<td headers="mcse.equal" class="gt_row gt_right">0.004087909</td>
+<td headers="est.unequal" class="gt_row gt_right">0.943</td>
+<td headers="mcse.unequal" class="gt_row gt_right">0.007331507</td></tr>
     <tr><td headers="DGM" class="gt_row gt_center">6</td>
-<td headers="est.equal" class="gt_row gt_right">0.065</td>
-<td headers="mcse.equal" class="gt_row gt_right">0.007795832</td>
-<td headers="est.unequal" class="gt_row gt_right">0.167</td>
-<td headers="mcse.unequal" class="gt_row gt_right">0.01179453</td></tr>
+<td headers="est.equal" class="gt_row gt_right">0.745</td>
+<td headers="mcse.equal" class="gt_row gt_right">0.013783142</td>
+<td headers="est.unequal" class="gt_row gt_right">0.942</td>
+<td headers="mcse.unequal" class="gt_row gt_right">0.007391617</td></tr>
     <tr><td headers="DGM" class="gt_row gt_center">7</td>
-<td headers="est.equal" class="gt_row gt_right">0.337</td>
-<td headers="mcse.equal" class="gt_row gt_right">0.014947609</td>
-<td headers="est.unequal" class="gt_row gt_right">0.337</td>
-<td headers="mcse.unequal" class="gt_row gt_right">0.01494761</td></tr>
+<td headers="est.equal" class="gt_row gt_right">0.947</td>
+<td headers="mcse.equal" class="gt_row gt_right">0.007084561</td>
+<td headers="est.unequal" class="gt_row gt_right">0.947</td>
+<td headers="mcse.unequal" class="gt_row gt_right">0.007084561</td></tr>
     <tr><td headers="DGM" class="gt_row gt_center">8</td>
-<td headers="est.equal" class="gt_row gt_right">0.561</td>
-<td headers="mcse.equal" class="gt_row gt_right">0.015693279</td>
-<td headers="est.unequal" class="gt_row gt_right">0.338</td>
-<td headers="mcse.unequal" class="gt_row gt_right">0.01495848</td></tr>
+<td headers="est.equal" class="gt_row gt_right">0.985</td>
+<td headers="mcse.equal" class="gt_row gt_right">0.003843826</td>
+<td headers="est.unequal" class="gt_row gt_right">0.943</td>
+<td headers="mcse.unequal" class="gt_row gt_right">0.007331507</td></tr>
     <tr><td headers="DGM" class="gt_row gt_center">9</td>
-<td headers="est.equal" class="gt_row gt_right">0.060</td>
-<td headers="mcse.equal" class="gt_row gt_right">0.007509993</td>
-<td headers="est.unequal" class="gt_row gt_right">0.175</td>
-<td headers="mcse.unequal" class="gt_row gt_right">0.01201561</td></tr>
+<td headers="est.equal" class="gt_row gt_right">0.743</td>
+<td headers="mcse.equal" class="gt_row gt_right">0.013818502</td>
+<td headers="est.unequal" class="gt_row gt_right">0.957</td>
+<td headers="mcse.unequal" class="gt_row gt_right">0.006414905</td></tr>
   </tbody>
   
   
@@ -2912,50 +2914,50 @@ comparison of power
   </thead>
   <tbody class="gt_table_body">
     <tr><td headers="DGM" class="gt_row gt_center">1</td>
-<td headers="est.equal" class="gt_row gt_right">0.638</td>
-<td headers="mcse.equal" class="gt_row gt_right">0.015197237</td>
-<td headers="est.unequal" class="gt_row gt_right">0.638</td>
-<td headers="mcse.unequal" class="gt_row gt_right">0.01519724</td></tr>
+<td headers="est.equal" class="gt_row gt_right">0.052</td>
+<td headers="mcse.equal" class="gt_row gt_right">0.007021111</td>
+<td headers="est.unequal" class="gt_row gt_right">0.052</td>
+<td headers="mcse.unequal" class="gt_row gt_right">0.007021111</td></tr>
     <tr><td headers="DGM" class="gt_row gt_center">2</td>
-<td headers="est.equal" class="gt_row gt_right">0.419</td>
-<td headers="mcse.equal" class="gt_row gt_right">0.015602532</td>
-<td headers="est.unequal" class="gt_row gt_right">0.644</td>
-<td headers="mcse.unequal" class="gt_row gt_right">0.01514147</td></tr>
+<td headers="est.equal" class="gt_row gt_right">0.012</td>
+<td headers="mcse.equal" class="gt_row gt_right">0.003443254</td>
+<td headers="est.unequal" class="gt_row gt_right">0.042</td>
+<td headers="mcse.unequal" class="gt_row gt_right">0.006343185</td></tr>
     <tr><td headers="DGM" class="gt_row gt_center">3</td>
-<td headers="est.equal" class="gt_row gt_right">0.953</td>
-<td headers="mcse.equal" class="gt_row gt_right">0.006692608</td>
-<td headers="est.unequal" class="gt_row gt_right">0.846</td>
-<td headers="mcse.unequal" class="gt_row gt_right">0.01141420</td></tr>
+<td headers="est.equal" class="gt_row gt_right">0.232</td>
+<td headers="mcse.equal" class="gt_row gt_right">0.013348258</td>
+<td headers="est.unequal" class="gt_row gt_right">0.041</td>
+<td headers="mcse.unequal" class="gt_row gt_right">0.006270486</td></tr>
     <tr><td headers="DGM" class="gt_row gt_center">4</td>
-<td headers="est.equal" class="gt_row gt_right">0.659</td>
-<td headers="mcse.equal" class="gt_row gt_right">0.014990630</td>
-<td headers="est.unequal" class="gt_row gt_right">0.659</td>
-<td headers="mcse.unequal" class="gt_row gt_right">0.01499063</td></tr>
+<td headers="est.equal" class="gt_row gt_right">0.042</td>
+<td headers="mcse.equal" class="gt_row gt_right">0.006343185</td>
+<td headers="est.unequal" class="gt_row gt_right">0.042</td>
+<td headers="mcse.unequal" class="gt_row gt_right">0.006343185</td></tr>
     <tr><td headers="DGM" class="gt_row gt_center">5</td>
-<td headers="est.equal" class="gt_row gt_right">0.431</td>
-<td headers="mcse.equal" class="gt_row gt_right">0.015660109</td>
-<td headers="est.unequal" class="gt_row gt_right">0.645</td>
-<td headers="mcse.unequal" class="gt_row gt_right">0.01513192</td></tr>
+<td headers="est.equal" class="gt_row gt_right">0.017</td>
+<td headers="mcse.equal" class="gt_row gt_right">0.004087909</td>
+<td headers="est.unequal" class="gt_row gt_right">0.057</td>
+<td headers="mcse.unequal" class="gt_row gt_right">0.007331507</td></tr>
     <tr><td headers="DGM" class="gt_row gt_center">6</td>
-<td headers="est.equal" class="gt_row gt_right">0.935</td>
-<td headers="mcse.equal" class="gt_row gt_right">0.007795832</td>
-<td headers="est.unequal" class="gt_row gt_right">0.833</td>
-<td headers="mcse.unequal" class="gt_row gt_right">0.01179453</td></tr>
+<td headers="est.equal" class="gt_row gt_right">0.255</td>
+<td headers="mcse.equal" class="gt_row gt_right">0.013783142</td>
+<td headers="est.unequal" class="gt_row gt_right">0.058</td>
+<td headers="mcse.unequal" class="gt_row gt_right">0.007391617</td></tr>
     <tr><td headers="DGM" class="gt_row gt_center">7</td>
-<td headers="est.equal" class="gt_row gt_right">0.663</td>
-<td headers="mcse.equal" class="gt_row gt_right">0.014947609</td>
-<td headers="est.unequal" class="gt_row gt_right">0.663</td>
-<td headers="mcse.unequal" class="gt_row gt_right">0.01494761</td></tr>
+<td headers="est.equal" class="gt_row gt_right">0.053</td>
+<td headers="mcse.equal" class="gt_row gt_right">0.007084561</td>
+<td headers="est.unequal" class="gt_row gt_right">0.053</td>
+<td headers="mcse.unequal" class="gt_row gt_right">0.007084561</td></tr>
     <tr><td headers="DGM" class="gt_row gt_center">8</td>
-<td headers="est.equal" class="gt_row gt_right">0.439</td>
-<td headers="mcse.equal" class="gt_row gt_right">0.015693279</td>
-<td headers="est.unequal" class="gt_row gt_right">0.662</td>
-<td headers="mcse.unequal" class="gt_row gt_right">0.01495848</td></tr>
+<td headers="est.equal" class="gt_row gt_right">0.015</td>
+<td headers="mcse.equal" class="gt_row gt_right">0.003843826</td>
+<td headers="est.unequal" class="gt_row gt_right">0.057</td>
+<td headers="mcse.unequal" class="gt_row gt_right">0.007331507</td></tr>
     <tr><td headers="DGM" class="gt_row gt_center">9</td>
-<td headers="est.equal" class="gt_row gt_right">0.940</td>
-<td headers="mcse.equal" class="gt_row gt_right">0.007509993</td>
-<td headers="est.unequal" class="gt_row gt_right">0.825</td>
-<td headers="mcse.unequal" class="gt_row gt_right">0.01201561</td></tr>
+<td headers="est.equal" class="gt_row gt_right">0.257</td>
+<td headers="mcse.equal" class="gt_row gt_right">0.013818502</td>
+<td headers="est.unequal" class="gt_row gt_right">0.043</td>
+<td headers="mcse.unequal" class="gt_row gt_right">0.006414905</td></tr>
   </tbody>
   
   
